@@ -135,14 +135,14 @@ Tự động kiểm tra và nâng cấp/cài đặt các ứng dụng phổ bi�
 ### Chạy bản EXE Portable
 
 1. **Tải bản đóng gói phát hành sẵn:**  
-   👉 **[📥 Tải về ITSupportToolSuite-v1.2.3.exe](dist/ITSupportToolSuite-v1.2.3.exe)** (Bản Portable)
+   👉 **[📥 Click vào đây để tải file ITSupportToolSuite-v1.2.3.exe](https://github.com/HoangGia73/HelpdeskApp/raw/main/dist/ITSupportToolSuite-v1.2.3.exe)** (Bản Portable)
 
 2. Nhấp đúp chuột để chạy trực tiếp. **Không cần chọn "Run as Administrator"** (Ứng dụng sẽ tự nâng quyền UAC khi thực sự cần).
 3. Kiểm tra mã SHA-256 để đảm bảo tính toàn vẹn:
    ```powershell
    Get-FileHash -Algorithm SHA256 .\dist\ITSupportToolSuite-v1.2.3.exe
    ```
-   *(Đối chiếu kết quả với file [`dist/SHA256SUMS-v1.2.3.txt`](dist/SHA256SUMS-v1.2.3.txt))*
+   *(Đối chiếu kết quả với file [`dist/SHA256SUMS-v1.2.3.txt`](https://github.com/HoangGia73/HelpdeskApp/raw/main/dist/SHA256SUMS-v1.2.3.txt))*
 
 ---
 
