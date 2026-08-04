@@ -3,6 +3,7 @@
 import os
 import queue
 import threading
+import threading
 import tkinter as tk
 from tkinter import messagebox, ttk
 import customtkinter
@@ -12,33 +13,131 @@ class UninstallerTabMixin:
     def build_uninstaller_tab_ui(self):
         tab = self.tab_uninstaller
         tab.grid_columnconfigure(0, weight=1); tab.grid_rowconfigure(2, weight=1)
-        head = customtkinter.CTkFrame(tab, corner_radius=12, fg_color=("#ffffff", "#172033"), border_width=1, border_color=("#dbe3ef", "#2b3953"))
+        
+        head = customtkinter.CTkFrame(
+            tab, corner_radius=12, fg_color=("#ffffff", "#0f172a"),
+            border_width=1, border_color=("#e2e8f0", "#1e293b")
+        )
         head.grid(row=0, column=0, sticky="ew", padx=10, pady=(10, 5))
-        customtkinter.CTkLabel(head, text="GỠ CÀI ĐẶT PHẦN MỀM", font=customtkinter.CTkFont(size=17, weight="bold")).pack(anchor="w", padx=18, pady=(12, 2))
-        customtkinter.CTkLabel(head, text="Quản lý ứng dụng đã cài, chạy trình gỡ chính thức và kiểm tra tàn dư.", text_color=("#64748b", "#94a3b8")).pack(anchor="w", padx=18, pady=(0, 12))
-        bar = customtkinter.CTkFrame(tab, fg_color="transparent"); bar.grid(row=1, column=0, sticky="ew", padx=10, pady=5); bar.grid_columnconfigure(0, weight=1)
-        self.uninstall_search = customtkinter.CTkEntry(bar, placeholder_text="Tìm theo tên, phiên bản hoặc nhà phát hành...")
-        self.uninstall_search.grid(row=0, column=0, sticky="ew", padx=(0, 8)); self.uninstall_search.bind("<KeyRelease>", self.filter_uninstall_apps)
-        self.btn_uninstall_refresh = customtkinter.CTkButton(bar, text="Làm mới", width=100, command=self.start_load_uninstall_apps); self.btn_uninstall_refresh.grid(row=0, column=1, padx=4)
-        self.btn_uninstall_run = customtkinter.CTkButton(bar, text="Gỡ cài đặt", width=125, fg_color="#dc2626", hover_color="#b91c1c", command=self.uninstall_selected_app)
+        
+        customtkinter.CTkLabel(
+            head, text="🗑️ QUẢN LÝ & GỠ CÀI ĐẶT PHẦN MỀM",
+            font=customtkinter.CTkFont(family="Segoe UI", size=15, weight="bold"),
+            text_color=("#0f172a", "#f8fafc")
+        ).pack(anchor="w", padx=18, pady=(12, 2))
+        
+        customtkinter.CTkLabel(
+            head, text="Xem danh sách phần mềm hệ thống, khởi chạy trình gỡ cài đặt chính thức và kiểm tra tàn dư Registry/File.",
+            font=customtkinter.CTkFont(family="Segoe UI", size=11),
+            text_color=("#64748b", "#94a3b8")
+        ).pack(anchor="w", padx=18, pady=(0, 12))
+        
+        bar = customtkinter.CTkFrame(tab, fg_color="transparent")
+        bar.grid(row=1, column=0, sticky="ew", padx=10, pady=5)
+        bar.grid_columnconfigure(0, weight=1)
+        
+        self.uninstall_search = customtkinter.CTkEntry(
+            bar, placeholder_text="🔍 Tìm theo tên, phiên bản hoặc nhà phát hành...",
+            height=36, corner_radius=8,
+            font=customtkinter.CTkFont(family="Segoe UI", size=12)
+        )
+        self.uninstall_search.grid(row=0, column=0, sticky="ew", padx=(0, 8))
+        self.uninstall_search.bind("<KeyRelease>", self.filter_uninstall_apps)
+        
+        self.btn_uninstall_refresh = customtkinter.CTkButton(
+            bar, text="🔄 Làm mới", width=110, height=36, corner_radius=8,
+            fg_color="#2563eb", hover_color="#1d4ed8",
+            font=customtkinter.CTkFont(family="Segoe UI", size=12, weight="bold"),
+            command=self.start_load_uninstall_apps
+        )
+        self.btn_uninstall_refresh.grid(row=0, column=1, padx=4)
+        
+        self.btn_uninstall_run = customtkinter.CTkButton(
+            bar, text="🗑️ Gỡ cài đặt", width=125, height=36, corner_radius=8,
+            fg_color="#dc2626", hover_color="#b91c1c",
+            font=customtkinter.CTkFont(family="Segoe UI", size=12, weight="bold"),
+            command=self.uninstall_selected_app
+        )
         self.btn_uninstall_run.grid(row=0, column=2, padx=(4, 0))
-        body = customtkinter.CTkFrame(tab, fg_color="transparent"); body.grid(row=2, column=0, sticky="nsew", padx=10, pady=(5, 10)); body.grid_columnconfigure(0, weight=3); body.grid_columnconfigure(1, weight=2); body.grid_rowconfigure(0, weight=1)
-        listing = customtkinter.CTkFrame(body, corner_radius=12); listing.grid(row=0, column=0, sticky="nsew", padx=(0, 5)); listing.grid_columnconfigure(0, weight=1); listing.grid_rowconfigure(0, weight=1)
+        
+        body = customtkinter.CTkFrame(tab, fg_color="transparent")
+        body.grid(row=2, column=0, sticky="nsew", padx=10, pady=(5, 10))
+        body.grid_columnconfigure(0, weight=3)
+        body.grid_columnconfigure(1, weight=2)
+        body.grid_rowconfigure(0, weight=1)
+        
+        listing = customtkinter.CTkFrame(
+            body, corner_radius=12,
+            fg_color=("#ffffff", "#0f172a"),
+            border_width=1, border_color=("#e2e8f0", "#1e293b")
+        )
+        listing.grid(row=0, column=0, sticky="nsew", padx=(0, 5))
+        listing.grid_columnconfigure(0, weight=1)
+        listing.grid_rowconfigure(0, weight=1)
+        
         self.uninstall_tree = ttk.Treeview(listing, columns=("name", "version", "publisher", "scope"), show="headings", selectmode="browse")
         for key, title, width in (("name", "Tên ứng dụng", 230), ("version", "Phiên bản", 90), ("publisher", "Nhà phát hành", 150), ("scope", "Phạm vi", 110)):
-            self.uninstall_tree.heading(key, text=title); self.uninstall_tree.column(key, width=width, minwidth=70)
-        scroll = ttk.Scrollbar(listing, orient="vertical", command=self.uninstall_tree.yview); self.uninstall_tree.configure(yscrollcommand=scroll.set)
-        self.uninstall_tree.grid(row=0, column=0, sticky="nsew", padx=(8, 0), pady=8); scroll.grid(row=0, column=1, sticky="ns", padx=(0, 8), pady=8)
-        self.uninstall_tree.bind("<<TreeviewSelect>>", self.show_uninstall_details); self.uninstall_tree.bind("<Double-1>", lambda _e: self.uninstall_selected_app())
-        panel = customtkinter.CTkFrame(body, corner_radius=12, fg_color=("#ffffff", "#172033")); panel.grid(row=0, column=1, sticky="nsew", padx=(5, 0)); panel.grid_columnconfigure(0, weight=1); panel.grid_rowconfigure(2, weight=1)
-        self.uninstall_count = customtkinter.CTkLabel(panel, text="Đang tải...", font=customtkinter.CTkFont(size=14, weight="bold")); self.uninstall_count.grid(row=0, column=0, sticky="w", padx=15, pady=(15, 8))
-        self.uninstall_details = customtkinter.CTkLabel(panel, text="Chọn một ứng dụng để xem thông tin.", anchor="nw", justify="left", wraplength=310); self.uninstall_details.grid(row=1, column=0, sticky="ew", padx=15, pady=5)
-        self.uninstall_leftovers = customtkinter.CTkTextbox(panel, fg_color=("#f8fafc", "#0b1020"), font=customtkinter.CTkFont(family="Consolas", size=11)); self.uninstall_leftovers.grid(row=2, column=0, sticky="nsew", padx=15, pady=10)
+            self.uninstall_tree.heading(key, text=title)
+            self.uninstall_tree.column(key, width=width, minwidth=70)
+        
+        scroll = ttk.Scrollbar(listing, orient="vertical", command=self.uninstall_tree.yview)
+        self.uninstall_tree.configure(yscrollcommand=scroll.set)
+        self.uninstall_tree.grid(row=0, column=0, sticky="nsew", padx=(8, 0), pady=8)
+        scroll.grid(row=0, column=1, sticky="ns", padx=(0, 8), pady=8)
+        
+        self.uninstall_tree.bind("<<TreeviewSelect>>", self.show_uninstall_details)
+        self.uninstall_tree.bind("<Double-1>", lambda _e: self.uninstall_selected_app())
+        
+        panel = customtkinter.CTkFrame(
+            body, corner_radius=12,
+            fg_color=("#ffffff", "#0f172a"),
+            border_width=1, border_color=("#e2e8f0", "#1e293b")
+        )
+        panel.grid(row=0, column=1, sticky="nsew", padx=(5, 0))
+        panel.grid_columnconfigure(0, weight=1)
+        panel.grid_rowconfigure(2, weight=1)
+        
+        self.uninstall_count = customtkinter.CTkLabel(
+            panel, text="Đang tải...",
+            font=customtkinter.CTkFont(family="Segoe UI", size=13, weight="bold"),
+            text_color=("#0f172a", "#f8fafc")
+        )
+        self.uninstall_count.grid(row=0, column=0, sticky="w", padx=15, pady=(12, 6))
+        
+        self.uninstall_details = customtkinter.CTkLabel(
+            panel, text="Chọn một ứng dụng để xem thông tin chi tiết.",
+            anchor="nw", justify="left", wraplength=310,
+            font=customtkinter.CTkFont(family="Segoe UI", size=11),
+            text_color=("#64748b", "#94a3b8")
+        )
+        self.uninstall_details.grid(row=1, column=0, sticky="ew", padx=15, pady=5)
+        
+        self.uninstall_leftovers = customtkinter.CTkTextbox(
+            panel, fg_color="#090d16", text_color="#38bdf8",
+            font=customtkinter.CTkFont(family="Consolas", size=11)
+        )
+        self.uninstall_leftovers.grid(row=2, column=0, sticky="nsew", padx=15, pady=10)
         self._set_leftover_text("Kết quả quét tàn dư sẽ hiển thị tại đây.")
-        actions = customtkinter.CTkFrame(panel, fg_color="transparent"); actions.grid(row=3, column=0, sticky="ew", padx=10, pady=(0, 12))
-        customtkinter.CTkButton(actions, text="Mở thư mục", command=self.open_uninstall_location).pack(side="left", fill="x", expand=True, padx=5)
-        customtkinter.CTkButton(actions, text="Quét tàn dư", fg_color="#f59e0b", hover_color="#d97706", command=self.scan_uninstall_leftovers).pack(side="left", fill="x", expand=True, padx=5)
-        self.uninstall_apps, self.uninstall_visible = [], {}; self.after(150, self.start_load_uninstall_apps)
+        
+        actions = customtkinter.CTkFrame(panel, fg_color="transparent")
+        actions.grid(row=3, column=0, sticky="ew", padx=10, pady=(0, 12))
+        
+        customtkinter.CTkButton(
+            actions, text="📁 Mở thư mục", height=34, corner_radius=8,
+            fg_color=("#475569", "#334155"), hover_color=("#334155", "#475569"),
+            font=customtkinter.CTkFont(family="Segoe UI", size=11, weight="bold"),
+            command=self.open_uninstall_location
+        ).pack(side="left", fill="x", expand=True, padx=5)
+        
+        customtkinter.CTkButton(
+            actions, text="🧹 Quét tàn dư", height=34, corner_radius=8,
+            fg_color="#f59e0b", hover_color="#d97706",
+            font=customtkinter.CTkFont(family="Segoe UI", size=11, weight="bold"),
+            command=self.scan_uninstall_leftovers
+        ).pack(side="left", fill="x", expand=True, padx=5)
+        
+        self.uninstall_apps, self.uninstall_visible = [], {}
+        self.after(150, self.start_load_uninstall_apps)
 
     def _set_leftover_text(self, text):
         self.uninstall_leftovers.configure(state="normal"); self.uninstall_leftovers.delete("1.0", tk.END); self.uninstall_leftovers.insert("1.0", text); self.uninstall_leftovers.configure(state="disabled")

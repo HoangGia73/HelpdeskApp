@@ -13,17 +13,20 @@ class SoftwareTabMixin:
     def build_software_tab_ui(self):
         self.tab_software.grid_columnconfigure(0, weight=1)
         self.tab_software.grid_rowconfigure(1, weight=1)
+        self.tab_software.grid_rowconfigure(1, weight=1)
         header = customtkinter.CTkFrame(
-            self.tab_software, corner_radius=12, fg_color=("#ffffff", "#172033"),
-            border_width=1, border_color=("#dbe3ef", "#2b3953")
+            self.tab_software, corner_radius=12, fg_color=("#ffffff", "#0f172a"),
+            border_width=1, border_color=("#e2e8f0", "#1e293b")
         )
         header.grid(row=0, column=0, sticky="ew", padx=10, pady=(10, 5))
         customtkinter.CTkLabel(
-            header, text="C\u00c0I PH\u1ea6N M\u1ec0M C\u01a0 B\u1ea2N",
-            font=customtkinter.CTkFont(size=17, weight="bold")
+            header, text="📦 CÀI ĐẶT PHẦN MỀM TỰ ĐỘNG",
+            font=customtkinter.CTkFont(family="Segoe UI", size=15, weight="bold"),
+            text_color=("#0f172a", "#f8fafc")
         ).pack(anchor="w", padx=18, pady=(12, 2))
         customtkinter.CTkLabel(
-            header, text="Ch\u1ecdn \u1ee9ng d\u1ee5ng cho m\u00e1y m\u1edbi. Ngu\u1ed3n c\u00e0i \u0111\u1eb7t: Windows Package Manager (winget).",
+            header, text="Chọn phần mềm cần thiết cho máy tính. Quản lý và tải tự động qua Windows Package Manager (winget).",
+            font=customtkinter.CTkFont(family="Segoe UI", size=11),
             text_color=("#64748b", "#94a3b8")
         ).pack(anchor="w", padx=18, pady=(0, 12))
 
@@ -33,22 +36,28 @@ class SoftwareTabMixin:
         content.grid_columnconfigure(1, weight=2)
         content.grid_rowconfigure(0, weight=1)
         listing = customtkinter.CTkScrollableFrame(
-            content, label_text="Danh s\u00e1ch ph\u1ea7n m\u1ec1m", corner_radius=12,
-            fg_color=("#ffffff", "#172033")
+            content, label_text="📋 Danh sách phần mềm sẵn có", corner_radius=12,
+            fg_color=("#ffffff", "#0f172a"),
+            border_width=1, border_color=("#e2e8f0", "#1e293b")
         )
         listing.grid(row=0, column=0, sticky="nsew", padx=(0, 5))
         listing.grid_columnconfigure(0, weight=1)
         self.software_rows = {}
         for index, package in enumerate(SoftwareManager.PACKAGES):
-            card = customtkinter.CTkFrame(listing, corner_radius=9, fg_color=("#f8fafc", "#111827"))
+            card = customtkinter.CTkFrame(
+                listing, corner_radius=10,
+                fg_color=("#f8fafc", "#1e293b"),
+                border_width=1, border_color=("#e2e8f0", "#334155")
+            )
             card.grid(row=index, column=0, sticky="ew", padx=5, pady=4)
             card.grid_columnconfigure(1, weight=1)
             checkbox = customtkinter.CTkCheckBox(
-                card, text=package["name"], font=customtkinter.CTkFont(size=13, weight="bold")
+                card, text=package["name"], font=customtkinter.CTkFont(family="Segoe UI", size=12, weight="bold")
             )
             checkbox.grid(row=0, column=0, rowspan=2, sticky="w", padx=12, pady=10)
             customtkinter.CTkLabel(
                 card, text=package["description"], anchor="w",
+                font=customtkinter.CTkFont(family="Segoe UI", size=11),
                 text_color=("#64748b", "#94a3b8")
             ).grid(row=0, column=1, sticky="sw", padx=8, pady=(7, 0))
             customtkinter.CTkLabel(
@@ -56,37 +65,60 @@ class SoftwareTabMixin:
                 font=customtkinter.CTkFont(family="Consolas", size=10),
                 text_color=("#94a3b8", "#64748b")
             ).grid(row=1, column=1, sticky="nw", padx=8, pady=(0, 7))
-            status = customtkinter.CTkLabel(card, text="Ch\u01b0a ki\u1ec3m tra", width=120, text_color="#f59e0b")
+            status = customtkinter.CTkLabel(
+                card, text="Chưa kiểm tra", width=110,
+                font=customtkinter.CTkFont(family="Segoe UI", size=11, weight="bold"),
+                text_color="#f59e0b"
+            )
             status.grid(row=0, column=2, rowspan=2, sticky="e", padx=12)
             self.software_rows[package["id"]] = {"package": package, "checkbox": checkbox, "status": status}
 
-        panel = customtkinter.CTkFrame(content, corner_radius=12, fg_color=("#ffffff", "#172033"))
+        panel = customtkinter.CTkFrame(
+            content, corner_radius=12,
+            fg_color=("#ffffff", "#0f172a"),
+            border_width=1, border_color=("#e2e8f0", "#1e293b")
+        )
         panel.grid(row=0, column=1, sticky="nsew", padx=(5, 0))
         panel.grid_columnconfigure(0, weight=1)
         panel.grid_rowconfigure(4, weight=1)
-        customtkinter.CTkLabel(panel, text="THAO T\u00c1C", font=customtkinter.CTkFont(size=14, weight="bold")).grid(
-            row=0, column=0, sticky="w", padx=15, pady=(15, 8)
-        )
+        customtkinter.CTkLabel(
+            panel, text="⚡ THAO TÁC & TIẾN TRÌNH",
+            font=customtkinter.CTkFont(family="Segoe UI", size=13, weight="bold"),
+            text_color=("#0f172a", "#f8fafc")
+        ).grid(row=0, column=0, sticky="w", padx=15, pady=(12, 8))
+
         choose = customtkinter.CTkFrame(panel, fg_color="transparent")
         choose.grid(row=1, column=0, sticky="ew", padx=10)
-        customtkinter.CTkButton(choose, text="Ch\u1ecdn t\u1ea5t c\u1ea3", command=lambda: self.set_all_software_selected(True)).pack(
-            side="left", padx=5, fill="x", expand=True
-        )
-        customtkinter.CTkButton(choose, text="B\u1ecf ch\u1ecdn", fg_color="#64748b", command=lambda: self.set_all_software_selected(False)).pack(
-            side="left", padx=5, fill="x", expand=True
-        )
+        customtkinter.CTkButton(
+            choose, text="✓ Chọn tất cả",
+            font=customtkinter.CTkFont(family="Segoe UI", size=11, weight="bold"),
+            height=32, corner_radius=8,
+            fg_color=("#2563eb", "#2563eb"), hover_color="#1d4ed8",
+            command=lambda: self.set_all_software_selected(True)
+        ).pack(side="left", padx=5, fill="x", expand=True)
+        customtkinter.CTkButton(
+            choose, text="✗ Bỏ chọn",
+            font=customtkinter.CTkFont(family="Segoe UI", size=11, weight="bold"),
+            height=32, corner_radius=8,
+            fg_color=("#64748b", "#475569"), hover_color="#334155",
+            command=lambda: self.set_all_software_selected(False)
+        ).pack(side="left", padx=5, fill="x", expand=True)
         self.btn_check_software = customtkinter.CTkButton(
-            panel, text="Ki\u1ec3m tra \u0111\u00e3 c\u00e0i", height=38, fg_color="#0ea5e9",
-            hover_color="#0284c7", command=self.start_check_software
+            panel, text="🔍 Kiểm tra phần mềm đã cài", height=36, corner_radius=8,
+            fg_color="#0284c7", hover_color="#0369a1",
+            font=customtkinter.CTkFont(family="Segoe UI", size=11, weight="bold"),
+            command=self.start_check_software
         )
-        self.btn_check_software.grid(row=2, column=0, sticky="ew", padx=15, pady=(12, 5))
+        self.btn_check_software.grid(row=2, column=0, sticky="ew", padx=15, pady=(10, 5))
         self.btn_install_software = customtkinter.CTkButton(
-            panel, text="C\u00e0i ph\u1ea7n m\u1ec1m \u0111\u00e3 ch\u1ecdn", height=42, fg_color="#10b981",
-            hover_color="#059669", font=customtkinter.CTkFont(weight="bold"), command=self.start_install_software
+            panel, text="🚀 Bắt đầu Cài phần mềm đã chọn", height=42, corner_radius=10,
+            fg_color="#10b981", hover_color="#059669",
+            font=customtkinter.CTkFont(family="Segoe UI", size=12, weight="bold"),
+            command=self.start_install_software
         )
         self.btn_install_software.grid(row=3, column=0, sticky="ew", padx=15, pady=5)
         self.software_log = customtkinter.CTkTextbox(
-            panel, fg_color="#0b1020", text_color="#4ade80",
+            panel, fg_color="#090d16", text_color="#38bdf8",
             font=customtkinter.CTkFont(family="Consolas", size=11)
         )
         self.software_log.grid(row=4, column=0, sticky="nsew", padx=15, pady=(10, 15))

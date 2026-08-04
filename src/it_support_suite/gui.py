@@ -30,66 +30,198 @@ class ITSupportApp(BackupTabMixin, NetworkTabMixin, PrinterTabMixin,
         # Tạo lưới giao diện chính
         self.grid_rowconfigure(0, minsize=50) # Banner tiêu đề
         self.grid_rowconfigure(1, weight=1)    # Khung nội dung chính
+        self.grid_rowconfigure(2, minsize=36)  # Footer
         self.grid_columnconfigure(0, weight=1)
         
         self.build_banner()
         self.build_tabs()
+        self.build_footer()
         
         # Đọc thông tin mạng mặc định khi khởi động ứng dụng
         self.refresh_network_info()
 
+
+    def build_footer(self):
+        """Render a modern professional status bar with product credits & system status."""
+        footer = customtkinter.CTkFrame(
+            self,
+            height=36,
+            corner_radius=0,
+            fg_color=("#e2e8f0", "#080d1a"),
+            border_width=1,
+            border_color=("#cbd5e1", "#1e293b"),
+        )
+        footer.grid(row=2, column=0, sticky="ew")
+        footer.grid_propagate(False)
+
+        # Config 3 cột bằng nhau: Trai (Info/Version) - Giua (Author Pill) - Phai (Status)
+        footer.grid_columnconfigure(0, weight=1)
+        footer.grid_columnconfigure(1, weight=1)
+        footer.grid_columnconfigure(2, weight=1)
+
+        # --- Góc trái: Tên ứng dụng + Badge Version ---
+        left_frame = customtkinter.CTkFrame(footer, fg_color="transparent")
+        left_frame.grid(row=0, column=0, sticky="w", padx=15, pady=4)
+
+        customtkinter.CTkLabel(
+            left_frame,
+            text="🛠️ IT Support Suite",
+            font=customtkinter.CTkFont(family="Segoe UI", size=11, weight="bold"),
+            text_color=("#475569", "#94a3b8"),
+        ).pack(side="left")
+
+        version_badge = customtkinter.CTkFrame(
+            left_frame,
+            corner_radius=6,
+            fg_color=("#dbeafe", "#1e293b"),
+            border_width=1,
+            border_color=("#bfdbfe", "#3b82f6"),
+        )
+        version_badge.pack(side="left", padx=8)
+
+        customtkinter.CTkLabel(
+            version_badge,
+            text="v1.2.4",
+            font=customtkinter.CTkFont(family="Segoe UI", size=10, weight="bold"),
+            text_color=("#1d4ed8", "#38bdf8"),
+        ).pack(padx=6, pady=1)
+
+        # --- Góc giữa: Designed & Developed by Royal (Thẻ Pill cách điệu) ---
+        center_pill = customtkinter.CTkFrame(
+            footer,
+            corner_radius=12,
+            fg_color=("#f1f5f9", "#0f172a"),
+            border_width=1,
+            border_color=("#cbd5e1", "#1e293b"),
+        )
+        center_pill.grid(row=0, column=1, pady=4)
+
+        center_content = customtkinter.CTkFrame(center_pill, fg_color="transparent")
+        center_content.pack(padx=12, pady=2)
+
+        customtkinter.CTkLabel(
+            center_content,
+            text="✨ Designed & Developed by ",
+            font=customtkinter.CTkFont(family="Segoe UI", size=11),
+            text_color=("#64748b", "#94a3b8"),
+        ).pack(side="left")
+
+        customtkinter.CTkLabel(
+            center_content,
+            text="Royal",
+            font=customtkinter.CTkFont(family="Segoe UI", size=11, weight="bold"),
+            text_color=("#2563eb", "#38bdf8"),
+        ).pack(side="left")
+
+        # --- Góc phải: Trạng thái hệ thống ---
+        right_frame = customtkinter.CTkFrame(footer, fg_color="transparent")
+        right_frame.grid(row=0, column=2, sticky="e", padx=15, pady=4)
+
+        customtkinter.CTkLabel(
+            right_frame,
+            text="🟢 Hệ thống sẵn sàng",
+            font=customtkinter.CTkFont(family="Segoe UI", size=11, weight="bold"),
+            text_color=("#16a34a", "#4ade80"),
+        ).pack(side="right")
+
     def build_banner(self):
         banner_frame = customtkinter.CTkFrame(
             self, corner_radius=0, height=64,
-            fg_color=("#ffffff", "#111827"),
-            border_width=0
+            fg_color=("#ffffff", "#0f172a"),
+            border_width=1,
+            border_color=("#e2e8f0", "#1e293b")
         )
         banner_frame.grid(row=0, column=0, sticky="ew", padx=0, pady=0)
+        banner_frame.grid_columnconfigure(0, weight=1)
         
-        # Tiêu đề ứng dụng
+        # Tiêu đề ứng dụng & Subtitle bên trái
+        title_box = customtkinter.CTkFrame(banner_frame, fg_color="transparent")
+        title_box.pack(side="left", padx=20, pady=10)
+
+        badge_icon = customtkinter.CTkFrame(
+            title_box, corner_radius=10,
+            fg_color=("#dbeafe", "#1e293b"),
+            border_width=1, border_color=("#93c5fd", "#3b82f6"),
+            width=42, height=42
+        )
+        badge_icon.pack(side="left", padx=(0, 12))
+        badge_icon.pack_propagate(False)
+        
+        customtkinter.CTkLabel(
+            badge_icon, text="🛠", font=customtkinter.CTkFont(size=20)
+        ).pack(expand=True)
+
+        titles_subframe = customtkinter.CTkFrame(title_box, fg_color="transparent")
+        titles_subframe.pack(side="left")
+
         title_label = customtkinter.CTkLabel(
-            banner_frame, 
-            text="🛠️ IT SUPPORT TOOL SUITE", 
-            font=customtkinter.CTkFont(family="Segoe UI", size=22, weight="bold"),
+            titles_subframe, 
+            text="IT SUPPORT TOOL SUITE", 
+            font=customtkinter.CTkFont(family="Segoe UI", size=18, weight="bold"),
             text_color=("#0f172a", "#f8fafc")
         )
-        title_label.pack(side="left", padx=20, pady=10)
+        title_label.pack(anchor="w")
+
+        subtitle_label = customtkinter.CTkLabel(
+            titles_subframe,
+            text="Trợ thủ kỹ thuật viên - Tối ưu công việc IT Helpdesk",
+            font=customtkinter.CTkFont(family="Segoe UI", size=11),
+            text_color=("#64748b", "#94a3b8")
+        )
+        subtitle_label.pack(anchor="w")
         
         # Trình chọn giao diện (Theme Switcher)
+        theme_box = customtkinter.CTkFrame(banner_frame, fg_color="transparent")
+        theme_box.pack(side="right", padx=20, pady=12)
+
+        theme_label = customtkinter.CTkLabel(
+            theme_box, text="Giao diện:",
+            font=customtkinter.CTkFont(family="Segoe UI", size=12, weight="bold"),
+            text_color=("#475569", "#cbd5e1")
+        )
+        theme_label.pack(side="left", padx=(0, 8), pady=2)
+
         theme_menu = customtkinter.CTkOptionMenu(
-            banner_frame,
+            theme_box,
             values=["Tối (Dark)", "Sáng (Light)"],
             command=self.toggle_theme,
-            width=130
+            width=125,
+            height=32,
+            corner_radius=8,
+            button_color="#2563eb",
+            button_hover_color="#1d4ed8"
         )
-        theme_menu.pack(side="right", padx=20, pady=10)
+        theme_menu.pack(side="left")
         theme_menu.set("Tối (Dark)")
-        
-        theme_label = customtkinter.CTkLabel(banner_frame, text="Giao diện:", font=customtkinter.CTkFont(size=12))
-        theme_label.pack(side="right", padx=5, pady=10)
 
     def build_tabs(self):
         self.tabview = customtkinter.CTkTabview(
             self,
             corner_radius=14,
             border_width=1,
-            border_color=("#dbe3ef", "#253047"),
-            fg_color=("#f8fafc", "#0f172a"),
+            border_color=("#cbd5e1", "#1e293b"),
+            fg_color=("#f8fafc", "#0b101d"),
+            text_color=("#0f172a", "#f8fafc"),
             segmented_button_selected_color="#2563eb",
             segmented_button_selected_hover_color="#1d4ed8",
-            segmented_button_unselected_color=("#e8eef7", "#1e293b"),
-            segmented_button_unselected_hover_color=("#dbe7f7", "#334155")
+            segmented_button_unselected_color=("#cbd5e1", "#1e293b"),
+            segmented_button_unselected_hover_color=("#94a3b8", "#334155")
         )
         self.tabview.grid(row=1, column=0, sticky="nsew", padx=15, pady=10)
         
-        # Tạo 3 tab chạy song song
-        self.tab_backup = self.tabview.add("SAO LƯU & KHÔI PHỤC")
-        self.tab_ip_scanner = self.tabview.add("TRA CỨU & QUẢN LÝ IP/MAC")
-        self.tab_printer = self.tabview.add("CÀI ĐẶT MÁY IN MẠNG")
-        
-        # Xây dựng chi tiết giao diện cho từng tab
-        self.tab_software = self.tabview.add("C\u00c0I PH\u1ea6N M\u1ec0M")
-        self.tab_uninstaller = self.tabview.add("G\u1ee0 C\u00c0I \u0110\u1eb6T")
+        # Tạo các tab với biểu tượng sạch (Loại bỏ U+FE0F variation selector gây lỗi ô vuông trên Windows)
+        self.tab_backup = self.tabview.add("💾 Sao Lưu & Khôi Phục")
+        self.tab_ip_scanner = self.tabview.add("🌐 Tra Cứu & Quản Lý IP")
+        self.tab_printer = self.tabview.add("🖨 Máy In Mạng")
+        self.tab_software = self.tabview.add("📦 Cài Phần Mềm")
+        self.tab_uninstaller = self.tabview.add("🗑 Gỡ Cài Đặt")
+
+        # Định cấu hình font chữ và text_color chuẩn độ tương phản cao cho thanh Tab
+        if hasattr(self.tabview, "_segmented_button"):
+            self.tabview._segmented_button.configure(
+                font=customtkinter.CTkFont(family="Segoe UI", size=12, weight="bold"),
+                text_color=("#0f172a", "#f8fafc")
+            )
 
         self.build_backup_tab_ui()
         self.build_ip_scanner_tab_ui()
@@ -101,21 +233,21 @@ class ITSupportApp(BackupTabMixin, NetworkTabMixin, PrinterTabMixin,
         self.apply_treeview_styles(dark_mode=True)
 
     def apply_treeview_styles(self, dark_mode=True):
-        """Định cấu hình Style cho Treeview để đồng nhất với theme Dark/Light."""
+        """Định cấu hình Style hiện đại cho Treeview để đồng nhất với theme Dark/Light."""
         style = ttk.Style()
         style.theme_use("clam")
         
-        bg_color = "#1e1e1e" if dark_mode else "#ffffff"
-        fg_color = "#ffffff" if dark_mode else "#1e1e1e"
-        head_bg = "#2d2d2d" if dark_mode else "#e0e0e0"
-        head_fg = "#ffffff" if dark_mode else "#1e1e1e"
-        select_bg = "#1f538d" if dark_mode else "#3b82f6"
+        bg_color = "#0f172a" if dark_mode else "#ffffff"
+        fg_color = "#f8fafc" if dark_mode else "#0f172a"
+        head_bg = "#1e293b" if dark_mode else "#e2e8f0"
+        head_fg = "#f8fafc" if dark_mode else "#0f172a"
+        select_bg = "#2563eb" if dark_mode else "#3b82f6"
         select_fg = "#ffffff"
         
         style.configure("Treeview",
                         background=bg_color,
                         foreground=fg_color,
-                        rowheight=28,
+                        rowheight=32,
                         fieldbackground=bg_color,
                         bordercolor=bg_color,
                         borderwidth=0)
@@ -135,11 +267,11 @@ class ITSupportApp(BackupTabMixin, NetworkTabMixin, PrinterTabMixin,
                   foreground=[('active', select_fg)])
                   
         if dark_mode:
-            self.tree.tag_configure("online", foreground="#4ade80", background="#1a2e1a")
-            self.tree.tag_configure("offline", foreground="#9ca3af")
+            self.tree.tag_configure("online", foreground="#4ade80", background="#142918")
+            self.tree.tag_configure("offline", foreground="#9ca3af", background="#182030")
         else:
             self.tree.tag_configure("online", foreground="#16a34a", background="#e8f5e9")
-            self.tree.tag_configure("offline", foreground="#6b7280")
+            self.tree.tag_configure("offline", foreground="#6b7280", background="#f1f5f9")
 
     def toggle_theme(self, choice):
         """Thay đổi chế độ giao diện Dark/Light của ứng dụng."""

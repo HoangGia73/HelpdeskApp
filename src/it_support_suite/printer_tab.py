@@ -31,24 +31,35 @@ class PrinterTabMixin:
         self.tab_printer.grid_rowconfigure(0, weight=1)
         
         # --- CỘT TRÁI: THIẾT LẬP MÁY IN MẠNG ---
-        left_frame = customtkinter.CTkFrame(self.tab_printer)
+        left_frame = customtkinter.CTkFrame(self.tab_printer, fg_color="transparent")
         left_frame.grid(row=0, column=0, sticky="nsew", padx=(10, 5), pady=10)
         
         # Khung 1: Địa chỉ IP & Quét
-        scan_group = customtkinter.CTkFrame(left_frame)
-        scan_group.pack(fill="x", padx=15, pady=15)
+        scan_group = customtkinter.CTkFrame(
+            left_frame,
+            corner_radius=12,
+            fg_color=("#ffffff", "#0f172a"),
+            border_width=1,
+            border_color=("#e2e8f0", "#1e293b")
+        )
+        scan_group.pack(fill="x", padx=0, pady=(0, 10))
         
         lbl_scan_title = customtkinter.CTkLabel(
             scan_group, 
             text="🔍 DÒ TÌM MÁY IN TRONG MẠNG", 
-            font=customtkinter.CTkFont(size=14, weight="bold")
+            font=customtkinter.CTkFont(family="Segoe UI", size=13, weight="bold"),
+            text_color=("#0f172a", "#f8fafc")
         )
-        lbl_scan_title.pack(anchor="w", padx=15, pady=(10, 10))
+        lbl_scan_title.pack(anchor="w", padx=15, pady=(12, 8))
         
         self.btn_scan_printer = customtkinter.CTkButton(
             scan_group, 
             text="🔍 Bắt đầu quét máy in mạng", 
-            height=30,
+            height=34,
+            corner_radius=8,
+            fg_color="#2563eb",
+            hover_color="#1d4ed8",
+            font=customtkinter.CTkFont(family="Segoe UI", size=12, weight="bold"),
             command=self.start_printer_scan
         )
         self.btn_scan_printer.pack(padx=20, pady=5, fill="x")
@@ -56,32 +67,41 @@ class PrinterTabMixin:
         self.combo_discovered_printers = customtkinter.CTkOptionMenu(
             scan_group,
             values=["(Bấm Quét để tìm máy in)"],
+            height=34,
+            corner_radius=8,
             command=self.on_select_discovered_printer
         )
         self.combo_discovered_printers.pack(padx=20, pady=(5, 15), fill="x")
         
         # Khung 2: Nhập thông tin thủ công
-        manual_group = customtkinter.CTkFrame(left_frame)
-        manual_group.pack(fill="both", expand=True, padx=15, pady=(0, 15))
+        manual_group = customtkinter.CTkFrame(
+            left_frame,
+            corner_radius=12,
+            fg_color=("#ffffff", "#0f172a"),
+            border_width=1,
+            border_color=("#e2e8f0", "#1e293b")
+        )
+        manual_group.pack(fill="both", expand=True, padx=0, pady=0)
         
         lbl_manual_title = customtkinter.CTkLabel(
             manual_group, 
             text="⚙️ THÔNG TIN MÁY IN CÀI ĐẶT", 
-            font=customtkinter.CTkFont(size=14, weight="bold")
+            font=customtkinter.CTkFont(family="Segoe UI", size=13, weight="bold"),
+            text_color=("#0f172a", "#f8fafc")
         )
-        lbl_manual_title.pack(anchor="w", padx=15, pady=(10, 10))
+        lbl_manual_title.pack(anchor="w", padx=15, pady=(12, 8))
         
-        lbl_printer_ip = customtkinter.CTkLabel(manual_group, text="Địa chỉ IP Máy in:", anchor="w")
+        lbl_printer_ip = customtkinter.CTkLabel(manual_group, text="Địa chỉ IP Máy in:", anchor="w", font=customtkinter.CTkFont(family="Segoe UI", size=11))
         lbl_printer_ip.pack(fill="x", padx=20, pady=2)
-        self.entry_printer_ip = customtkinter.CTkEntry(manual_group, placeholder_text="Ví dụ: 192.168.1.100")
+        self.entry_printer_ip = customtkinter.CTkEntry(manual_group, placeholder_text="Ví dụ: 192.168.1.100", height=34, corner_radius=8)
         self.entry_printer_ip.pack(fill="x", padx=20, pady=5)
         
-        lbl_printer_name = customtkinter.CTkLabel(manual_group, text="Tên hiển thị Máy in:", anchor="w")
+        lbl_printer_name = customtkinter.CTkLabel(manual_group, text="Tên hiển thị Máy in:", anchor="w", font=customtkinter.CTkFont(family="Segoe UI", size=11))
         lbl_printer_name.pack(fill="x", padx=20, pady=2)
-        self.entry_printer_name = customtkinter.CTkEntry(manual_group, placeholder_text="Ví dụ: HP_LaserJet_Ke_Toan")
+        self.entry_printer_name = customtkinter.CTkEntry(manual_group, placeholder_text="Ví dụ: HP_LaserJet_Ke_Toan", height=34, corner_radius=8)
         self.entry_printer_name.pack(fill="x", padx=20, pady=5)
         
-        lbl_driver_mode = customtkinter.CTkLabel(manual_group, text="Chế độ Driver máy in:", anchor="w")
+        lbl_driver_mode = customtkinter.CTkLabel(manual_group, text="Chế độ Driver máy in:", anchor="w", font=customtkinter.CTkFont(family="Segoe UI", size=11))
         lbl_driver_mode.pack(fill="x", padx=20, pady=2)
         
         self.var_driver_mode = tk.StringVar(value="auto")
@@ -103,7 +123,8 @@ class PrinterTabMixin:
             text="Tự động (Windows IPP)", 
             variable=self.var_driver_mode, 
             value="auto", 
-            command=on_driver_mode_change
+            command=on_driver_mode_change,
+            font=customtkinter.CTkFont(family="Segoe UI", size=11)
         )
         rb_auto.pack(side="left", padx=(0, 20))
         
@@ -112,7 +133,8 @@ class PrinterTabMixin:
             text="Thủ công (chọn file .inf)", 
             variable=self.var_driver_mode, 
             value="manual", 
-            command=on_driver_mode_change
+            command=on_driver_mode_change,
+            font=customtkinter.CTkFont(family="Segoe UI", size=11)
         )
         rb_manual.pack(side="left", padx=20)
         
@@ -120,10 +142,12 @@ class PrinterTabMixin:
         self.btn_browse_inr = customtkinter.CTkButton(
             manual_group, 
             text="📂 Chọn file Driver (.inf)...", 
-            height=25, 
+            height=34, 
+            corner_radius=8,
             state="disabled",
-            fg_color="#3a3a3a",
-            hover_color="#4a4a4a",
+            fg_color=("#475569", "#334155"),
+            hover_color=("#334155", "#475569"),
+            font=customtkinter.CTkFont(family="Segoe UI", size=11, weight="bold"),
             command=self.browse_inf_rile
         )
         self.btn_browse_inr.pack(fill="x", padx=20, pady=5)
@@ -131,44 +155,54 @@ class PrinterTabMixin:
         self.combo_inf_models = customtkinter.CTkOptionMenu(
             manual_group,
             values=["(Chọn file .inf để load danh sách model)"],
+            height=34,
+            corner_radius=8,
             state="disabled"
         )
-        self.combo_inf_models.pack(fill="x", padx=20, pady=5)
+        self.combo_inf_models.pack(fill="x", padx=20, pady=(5, 15))
         
         # --- CỘT PHẢI: LOG TIẾN TRÌNH & CÀI ĐẶT ---
-        right_frame = customtkinter.CTkFrame(self.tab_printer)
+        right_frame = customtkinter.CTkFrame(
+            self.tab_printer,
+            corner_radius=12,
+            fg_color=("#ffffff", "#0f172a"),
+            border_width=1,
+            border_color=("#e2e8f0", "#1e293b")
+        )
         right_frame.grid(row=0, column=1, sticky="nsew", padx=(5, 10), pady=10)
         
         lbl_log_title = customtkinter.CTkLabel(
             right_frame, 
             text="📋 TRẠNG THÁI CÀI ĐẶT MÁY IN", 
-            font=customtkinter.CTkFont(size=14, weight="bold")
+            font=customtkinter.CTkFont(family="Segoe UI", size=13, weight="bold"),
+            text_color=("#0f172a", "#f8fafc")
         )
-        lbl_log_title.pack(anchor="w", padx=15, pady=(10, 5))
+        lbl_log_title.pack(anchor="w", padx=15, pady=(12, 8))
         
         # Hộp log máy in
         self.txt_printer_log = customtkinter.CTkTextbox(
             right_frame, 
-            fg_color="#121212", 
-            text_color="#00ff00", 
-            font=customtkinter.CTkFont(family="Courier New", size=12)
+            fg_color="#090d16", 
+            text_color="#38bdf8", 
+            font=customtkinter.CTkFont(family="Consolas", size=11)
         )
         self.txt_printer_log.pack(fill="both", expand=True, padx=15, pady=10)
         self.txt_printer_log.configure(state="disabled")
         
         # Thanh tiến trình
-        self.progress_printer = customtkinter.CTkProgressBar(right_frame, progress_color="#3b82f6")
+        self.progress_printer = customtkinter.CTkProgressBar(right_frame, progress_color="#2563eb")
         self.progress_printer.pack(fill="x", padx=15, pady=5)
         self.progress_printer.set(0)
         
         # Nút bấm cài đặt máy in
         self.btn_install_printer = customtkinter.CTkButton(
             right_frame, 
-            text="📥 KHỞI CHẠY CÀI ĐẶT MÁY IN", 
-            fg_color="#3b82f6", 
-            hover_color="#2563eb",
-            font=customtkinter.CTkFont(size=14, weight="bold"),
-            height=35,
+            text="🖨️ KHỞI CHẠY CÀI ĐẶT MÁY IN", 
+            fg_color="#10b981", 
+            hover_color="#059669",
+            font=customtkinter.CTkFont(family="Segoe UI", size=13, weight="bold"),
+            height=42,
+            corner_radius=10,
             command=self.start_printer_install
         )
         self.btn_install_printer.pack(fill="x", padx=15, pady=(5, 15))

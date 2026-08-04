@@ -39,62 +39,91 @@ class BackupTabMixin:
         self.tab_backup.grid_rowconfigure(3, weight=1)    # Khu vực log & tiến trình
         
         # --- Khung 1: Đường dẫn lưu trữ ---
-        path_frame = customtkinter.CTkFrame(self.tab_backup)
+        path_frame = customtkinter.CTkFrame(
+            self.tab_backup,
+            corner_radius=12,
+            fg_color=("#ffffff", "#0f172a"),
+            border_width=1,
+            border_color=("#e2e8f0", "#1e293b")
+        )
         path_frame.grid(row=0, column=0, sticky="ew", padx=10, pady=5)
         path_frame.grid_columnconfigure(0, weight=1)
         
         lbl_path = customtkinter.CTkLabel(
             path_frame, 
-            text="Đường dẫn thư mục lưu trữ (Backup Destination) / File Zip khôi phục:", 
-            font=customtkinter.CTkFont(weight="bold")
+            text="📁 Đường dẫn thư mục lưu trữ (Backup Destination) / File Zip khôi phục:", 
+            font=customtkinter.CTkFont(family="Segoe UI", size=12, weight="bold"),
+            text_color=("#0f172a", "#f8fafc")
         )
-        lbl_path.grid(row=0, column=0, columnspan=2, sticky="w", padx=15, pady=(8, 2))
+        lbl_path.grid(row=0, column=0, columnspan=2, sticky="w", padx=15, pady=(10, 4))
         
-        self.entry_backup_path = customtkinter.CTkEntry(path_frame, placeholder_text="Bấm 'Duyệt...' để chọn đường dẫn sao lưu hoặc khôi phục...")
-        self.entry_backup_path.grid(row=1, column=0, sticky="ew", padx=(15, 10), pady=(0, 10))
+        self.entry_backup_path = customtkinter.CTkEntry(
+            path_frame,
+            placeholder_text="Bấm 'Duyệt...' để chọn đường dẫn sao lưu hoặc khôi phục...",
+            height=36,
+            corner_radius=8
+        )
+        self.entry_backup_path.grid(row=1, column=0, sticky="ew", padx=(15, 10), pady=(0, 12))
         
-        btn_browse = customtkinter.CTkButton(path_frame, text="Duyệt...", width=100, command=self.browse_backup_path)
-        btn_browse.grid(row=1, column=1, sticky="e", padx=(0, 15), pady=(0, 10))
+        btn_browse = customtkinter.CTkButton(
+            path_frame,
+            text="🔍 Duyệt...",
+            width=110,
+            height=36,
+            corner_radius=8,
+            fg_color="#2563eb",
+            hover_color="#1d4ed8",
+            font=customtkinter.CTkFont(family="Segoe UI", size=12, weight="bold"),
+            command=self.browse_backup_path
+        )
+        btn_browse.grid(row=1, column=1, sticky="e", padx=(0, 15), pady=(0, 12))
         
         # --- Khung 2: Các mục muốn sao lưu ---
-        options_frame = customtkinter.CTkFrame(self.tab_backup)
+        options_frame = customtkinter.CTkFrame(
+            self.tab_backup,
+            corner_radius=12,
+            fg_color=("#ffffff", "#0f172a"),
+            border_width=1,
+            border_color=("#e2e8f0", "#1e293b")
+        )
         options_frame.grid(row=1, column=0, sticky="ew", padx=10, pady=5)
         
         lbl_options = customtkinter.CTkLabel(
             options_frame, 
-            text="Các thành phần hệ thống muốn Sao lưu:", 
-            font=customtkinter.CTkFont(weight="bold")
+            text="⚙️ Các thành phần hệ thống muốn Sao lưu:", 
+            font=customtkinter.CTkFont(family="Segoe UI", size=12, weight="bold"),
+            text_color=("#0f172a", "#f8fafc")
         )
-        lbl_options.pack(anchor="w", padx=15, pady=(8, 5))
+        lbl_options.pack(anchor="w", padx=15, pady=(10, 6))
         
         # Layout checkbox dạng ngang
-        cb_subframe = customtkinter.CTkFrame(options_frame, fg_color="transparent")
+        cb_subframe = customtkinter.CTkFrame(options_frame, fg_color=("#f8fafc", "#1e293b"), corner_radius=10)
         cb_subframe.pack(fill="x", padx=15, pady=(0, 10))
         
-        self.cb_driver = customtkinter.CTkCheckBox(cb_subframe, text="Driver hệ thống")
+        self.cb_driver = customtkinter.CTkCheckBox(cb_subframe, text="Driver hệ thống", font=customtkinter.CTkFont(family="Segoe UI", size=12))
         self.cb_driver.pack(side="left", padx=(0, 20))
         self.cb_driver.select()
         self.cb_driver.configure(command=self.update_driver_selection_controls)
 
         self.btn_select_drivers = customtkinter.CTkButton(
-            cb_subframe, text="Qu\u00e9t & ch\u1ecdn driver...", width=145,
+            cb_subframe, text="Quét & chọn driver...", width=145,
             command=self.open_driver_selection_dialog
         )
         self.btn_select_drivers.pack(side="left", padx=(0, 10))
 
         self.lbl_driver_count = customtkinter.CTkLabel(
-            cb_subframe, text="Ch\u01b0a qu\u00e9t", text_color="#f59e0b"
+            cb_subframe, text="Chưa quét", text_color="#f59e0b"
         )
         self.lbl_driver_count.pack(side="left", padx=(0, 15))
         
-        self.cb_userdata = customtkinter.CTkCheckBox(cb_subframe, text="Dữ liệu người dùng")
+        self.cb_userdata = customtkinter.CTkCheckBox(cb_subframe, text="Dữ liệu người dùng", font=customtkinter.CTkFont(family="Segoe UI", size=12))
         self.cb_userdata.pack(side="left", padx=20)
         self.cb_userdata.select()
         
-        self.cb_chrome = customtkinter.CTkCheckBox(cb_subframe, text="Google Chrome Profile")
+        self.cb_chrome = customtkinter.CTkCheckBox(cb_subframe, text="Google Chrome Profile", font=customtkinter.CTkFont(family="Segoe UI", size=12))
         self.cb_chrome.pack(side="left", padx=20)
         
-        self.cb_outlook = customtkinter.CTkCheckBox(cb_subframe, text="Dữ liệu Mail Outlook (.PST/.OST)")
+        self.cb_outlook = customtkinter.CTkCheckBox(cb_subframe, text="Dữ liệu Mail Outlook (.PST/.OST)", font=customtkinter.CTkFont(family="Segoe UI", size=12))
         self.cb_outlook.pack(side="left", padx=20)
         
         self.cb_zip = customtkinter.CTkCheckBox(options_frame, text="Nén toàn bộ thành file .ZIP sau khi sao lưu xong (Tự động dọn dẹp thư mục gốc)", text_color="#3b82f6")
@@ -104,8 +133,10 @@ class BackupTabMixin:
             options_frame,
             placeholder_text="Mật khẩu mã hóa (tối thiểu 12 ký tự; để trống nếu chỉ tạo ZIP)",
             show="*",
+            height=34,
+            corner_radius=8
         )
-        self.entry_backup_password.pack(fill="x", padx=15, pady=(0, 10))
+        self.entry_backup_password.pack(fill="x", padx=15, pady=(0, 12))
 
         # Re-layout backup choices into a clean, responsive two-row grid.
         for widget in cb_subframe.winfo_children():
@@ -124,24 +155,24 @@ class BackupTabMixin:
         )
         self.btn_select_drivers.configure(
             height=34, corner_radius=8, fg_color="#2563eb", hover_color="#1d4ed8",
-            font=customtkinter.CTkFont(size=12, weight="bold")
+            font=customtkinter.CTkFont(family="Segoe UI", size=12, weight="bold")
         )
         self.lbl_driver_count.grid(
             row=1, column=1, sticky="w", padx=12, pady=(2, 10)
         )
         self.lbl_driver_count.configure(
-            font=customtkinter.CTkFont(size=12, weight="bold")
+            font=customtkinter.CTkFont(family="Segoe UI", size=12, weight="bold")
         )
 
         options_frame.configure(
             corner_radius=12,
-            fg_color=("#ffffff", "#172033"),
+            fg_color=("#ffffff", "#0f172a"),
             border_width=1,
-            border_color=("#dbe3ef", "#2b3953")
+            border_color=("#e2e8f0", "#1e293b")
         )
-        cb_subframe.configure(fg_color=("#f8fafc", "#111827"), corner_radius=10)
+        cb_subframe.configure(fg_color=("#f8fafc", "#1e293b"), corner_radius=10)
         self.cb_zip.configure(
-            font=customtkinter.CTkFont(size=12, weight="bold"),
+            font=customtkinter.CTkFont(family="Segoe UI", size=12, weight="bold"),
             text_color=("#1d4ed8", "#60a5fa")
         )
 
@@ -154,25 +185,31 @@ class BackupTabMixin:
             text="🚀 Bắt đầu Sao lưu (Backup)", 
             fg_color="#10b981", 
             hover_color="#059669",
-            font=customtkinter.CTkFont(weight="bold"), 
+            font=customtkinter.CTkFont(family="Segoe UI", size=13, weight="bold"), 
             command=self.start_backup
         )
-        self.btn_backup.pack(side="left", padx=(10, 20), fill="x", expand=True)
+        self.btn_backup.pack(side="left", padx=(10, 15), fill="x", expand=True)
         self.btn_backup.configure(height=44, corner_radius=10)
         
         self.btn_restore = customtkinter.CTkButton(
             control_frame, 
-            text="🔄 Bắt đầu Khôi phục (Restore)", 
-            fg_color="#3b82f6", 
-            hover_color="#2563eb",
-            font=customtkinter.CTkFont(weight="bold"), 
+            text="↺ Bắt đầu Khôi phục (Restore)", 
+            fg_color="#2563eb", 
+            hover_color="#1d4ed8",
+            font=customtkinter.CTkFont(family="Segoe UI", size=13, weight="bold"), 
             command=self.start_restore
         )
-        self.btn_restore.pack(side="right", padx=(20, 10), fill="x", expand=True)
+        self.btn_restore.pack(side="right", padx=(15, 10), fill="x", expand=True)
         self.btn_restore.configure(height=44, corner_radius=10)
 
         # --- Khung 4: Tiến trình & Hộp hiển thị log ---
-        log_frame = customtkinter.CTkFrame(self.tab_backup)
+        log_frame = customtkinter.CTkFrame(
+            self.tab_backup,
+            corner_radius=12,
+            fg_color=("#ffffff", "#0f172a"),
+            border_width=1,
+            border_color=("#e2e8f0", "#1e293b")
+        )
         log_frame.grid(row=3, column=0, sticky="nsew", padx=10, pady=10)
         log_frame.grid_columnconfigure(0, weight=1)
         log_frame.grid_rowconfigure(0, minsize=25)
@@ -186,9 +223,9 @@ class BackupTabMixin:
         # Ô hiển thị Log lớn kiểu Terminal đen
         self.txt_log = customtkinter.CTkTextbox(
             log_frame, 
-            fg_color="#121212", 
-            text_color="#00ff00", 
-            font=customtkinter.CTkFont(family="Courier New", size=12)
+            fg_color="#090d16", 
+            text_color="#38bdf8", 
+            font=customtkinter.CTkFont(family="Consolas", size=11)
         )
         self.txt_log.grid(row=1, column=0, sticky="nsew", padx=15, pady=(0, 15))
         self.txt_log.configure(state="disabled")

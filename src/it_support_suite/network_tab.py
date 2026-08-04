@@ -30,75 +30,95 @@ class NetworkTabMixin:
         self.tab_ip_scanner.grid_rowconfigure(0, weight=1)
         
         # --- CỘT TRÁI: CẤU HÌNH & THÔNG TIN MẠNG ---
-        left_frame = customtkinter.CTkFrame(self.tab_ip_scanner)
+        left_frame = customtkinter.CTkFrame(self.tab_ip_scanner, fg_color="transparent")
         left_frame.grid(row=0, column=0, sticky="nsew", padx=(10, 5), pady=10)
         
         # Khung thông tin IP hiện tại của máy tính
-        info_group = customtkinter.CTkFrame(left_frame)
-        info_group.pack(fill="x", padx=15, pady=15)
+        info_group = customtkinter.CTkFrame(
+            left_frame,
+            corner_radius=12,
+            fg_color=("#ffffff", "#0f172a"),
+            border_width=1,
+            border_color=("#e2e8f0", "#1e293b")
+        )
+        info_group.pack(fill="x", padx=0, pady=(0, 10))
         
         lbl_info_title = customtkinter.CTkLabel(
             info_group, 
-            text="🖥️ THÔNG TIN MẠNG MÁY TÍNH", 
-            font=customtkinter.CTkFont(size=14, weight="bold")
+            text="🖥 THÔNG TIN MẠNG MÁY TÍNH", 
+            font=customtkinter.CTkFont(family="Segoe UI", size=13, weight="bold"),
+            text_color=("#0f172a", "#f8fafc")
         )
-        lbl_info_title.pack(anchor="w", padx=15, pady=(10, 10))
+        lbl_info_title.pack(anchor="w", padx=15, pady=(12, 8))
         
         # Hiển thị IP, Subnet Mask, Gateway hiện tại
-        self.lbl_adapter = customtkinter.CTkLabel(info_group, text="Card mạng: Đang đọc...", anchor="w")
+        self.lbl_adapter = customtkinter.CTkLabel(info_group, text="Card mạng: Đang đọc...", anchor="w", font=customtkinter.CTkFont(family="Segoe UI", size=11))
         self.lbl_adapter.pack(fill="x", padx=20, pady=2)
 
-        self.lbl_local_ip = customtkinter.CTkLabel(info_group, text="IPv4 Address: Đang đọc...", anchor="w")
+        self.lbl_local_ip = customtkinter.CTkLabel(info_group, text="IPv4 Address: Đang đọc...", anchor="w", font=customtkinter.CTkFont(family="Segoe UI", size=11))
         self.lbl_local_ip.pack(fill="x", padx=20, pady=2)
         
-        self.lbl_subnet = customtkinter.CTkLabel(info_group, text="Subnet Mask: Đang đọc...", anchor="w")
+        self.lbl_subnet = customtkinter.CTkLabel(info_group, text="Subnet Mask: Đang đọc...", anchor="w", font=customtkinter.CTkFont(family="Segoe UI", size=11))
         self.lbl_subnet.pack(fill="x", padx=20, pady=2)
         
-        self.lbl_gateway = customtkinter.CTkLabel(info_group, text="Default Gateway: Đang đọc...", anchor="w")
+        self.lbl_gateway = customtkinter.CTkLabel(info_group, text="Default Gateway: Đang đọc...", anchor="w", font=customtkinter.CTkFont(family="Segoe UI", size=11))
         self.lbl_gateway.pack(fill="x", padx=20, pady=2)
         
         btn_refresh = customtkinter.CTkButton(
             info_group, 
             text="🔄 Làm mới thông tin mạng", 
-            height=25, 
+            height=32,
+            corner_radius=8,
+            fg_color="#2563eb",
+            hover_color="#1d4ed8",
+            font=customtkinter.CTkFont(family="Segoe UI", size=11, weight="bold"),
             command=self.refresh_network_info
         )
         btn_refresh.pack(padx=20, pady=(10, 5), fill="x")
 
         self.btn_config_ip = customtkinter.CTkButton(
             info_group, 
-            text="⚙️ Cấu hình IP mạng", 
-            height=25, 
-            fg_color="#3a3a3a",
-            hover_color="#4a4a4a",
+            text="⚙ Cấu hình IP mạng", 
+            height=32, 
+            corner_radius=8,
+            fg_color=("#475569", "#334155"),
+            hover_color=("#334155", "#475569"),
+            font=customtkinter.CTkFont(family="Segoe UI", size=11, weight="bold"),
             command=self.open_ip_config_dialog
         )
         self.btn_config_ip.pack(padx=20, pady=(5, 15), fill="x")
 
         # Khung cấu hình Quét Mạng LAN
-        scan_group = customtkinter.CTkFrame(left_frame)
-        scan_group.pack(fill="both", expand=True, padx=15, pady=(0, 15))
+        scan_group = customtkinter.CTkFrame(
+            left_frame,
+            corner_radius=12,
+            fg_color=("#ffffff", "#0f172a"),
+            border_width=1,
+            border_color=("#e2e8f0", "#1e293b")
+        )
+        scan_group.pack(fill="both", expand=True, padx=0, pady=0)
         
         lbl_scan_title = customtkinter.CTkLabel(
             scan_group, 
             text="📡 QUÉT MẠNG NỘI BỘ (LAN SCANNER)", 
-            font=customtkinter.CTkFont(size=14, weight="bold")
+            font=customtkinter.CTkFont(family="Segoe UI", size=13, weight="bold"),
+            text_color=("#0f172a", "#f8fafc")
         )
-        lbl_scan_title.pack(anchor="w", padx=15, pady=(10, 10))
+        lbl_scan_title.pack(anchor="w", padx=15, pady=(12, 8))
         
         # Nhập dải IP
-        lbl_start_ip = customtkinter.CTkLabel(scan_group, text="IP Bắt đầu (Start IP):", anchor="w")
+        lbl_start_ip = customtkinter.CTkLabel(scan_group, text="IP Bắt đầu (Start IP):", anchor="w", font=customtkinter.CTkFont(family="Segoe UI", size=11))
         lbl_start_ip.pack(fill="x", padx=20, pady=(5, 1))
-        self.entry_start_ip = customtkinter.CTkEntry(scan_group, placeholder_text="192.168.1.1")
+        self.entry_start_ip = customtkinter.CTkEntry(scan_group, placeholder_text="192.168.1.1", height=34, corner_radius=8)
         self.entry_start_ip.pack(fill="x", padx=20, pady=(0, 5))
         
-        lbl_end_ip = customtkinter.CTkLabel(scan_group, text="IP Kết thúc (End IP):", anchor="w")
+        lbl_end_ip = customtkinter.CTkLabel(scan_group, text="IP Kết thúc (End IP):", anchor="w", font=customtkinter.CTkFont(family="Segoe UI", size=11))
         lbl_end_ip.pack(fill="x", padx=20, pady=(5, 1))
-        self.entry_end_ip = customtkinter.CTkEntry(scan_group, placeholder_text="192.168.1.254")
+        self.entry_end_ip = customtkinter.CTkEntry(scan_group, placeholder_text="192.168.1.254", height=34, corner_radius=8)
         self.entry_end_ip.pack(fill="x", padx=20, pady=(0, 10))
         
         # Thanh tiến trình quét
-        self.progress_scan = customtkinter.CTkProgressBar(scan_group, progress_color="#3b82f6")
+        self.progress_scan = customtkinter.CTkProgressBar(scan_group, progress_color="#2563eb")
         self.progress_scan.pack(fill="x", padx=20, pady=8)
         self.progress_scan.set(0)
         
@@ -106,9 +126,11 @@ class NetworkTabMixin:
         self.btn_scan = customtkinter.CTkButton(
             scan_group, 
             text="🔍 Bắt đầu quét mạng", 
-            fg_color="#3b82f6", 
-            hover_color="#2563eb",
-            font=customtkinter.CTkFont(weight="bold"),
+            height=38,
+            corner_radius=8,
+            fg_color="#2563eb", 
+            hover_color="#1d4ed8",
+            font=customtkinter.CTkFont(family="Segoe UI", size=12, weight="bold"),
             command=self.start_network_scan
         )
         self.btn_scan.pack(fill="x", padx=20, pady=8)
@@ -116,23 +138,32 @@ class NetworkTabMixin:
         self.btn_export = customtkinter.CTkButton(
             scan_group, 
             text="📥 Xuất Báo cáo CSV/Excel", 
+            height=38,
+            corner_radius=8,
             fg_color="#10b981", 
             hover_color="#059669",
-            font=customtkinter.CTkFont(weight="bold"),
+            font=customtkinter.CTkFont(family="Segoe UI", size=12, weight="bold"),
             command=self.export_scan_results
         )
         self.btn_export.pack(fill="x", padx=20, pady=(0, 15))
 
         # --- CỘT PHẢI: BẢNG KẾT QUẢ THIẾT BỊ QUÉT ĐƯỢC ---
-        right_frame = customtkinter.CTkFrame(self.tab_ip_scanner)
+        right_frame = customtkinter.CTkFrame(
+            self.tab_ip_scanner,
+            corner_radius=12,
+            fg_color=("#ffffff", "#0f172a"),
+            border_width=1,
+            border_color=("#e2e8f0", "#1e293b")
+        )
         right_frame.grid(row=0, column=1, sticky="nsew", padx=(5, 10), pady=10)
         
         lbl_table_title = customtkinter.CTkLabel(
             right_frame, 
             text="📋 DANH SÁCH THIẾT BỊ HOẠT ĐỘNG TRONG MẠNG", 
-            font=customtkinter.CTkFont(size=14, weight="bold")
+            font=customtkinter.CTkFont(family="Segoe UI", size=13, weight="bold"),
+            text_color=("#0f172a", "#f8fafc")
         )
-        lbl_table_title.pack(anchor="w", padx=15, pady=(10, 5))
+        lbl_table_title.pack(anchor="w", padx=15, pady=(12, 8))
         
         # Thiết kế bảng Treeview lồng vào customtkinter
         table_container = tk.Frame(right_frame, bg="#2a2d2e")
