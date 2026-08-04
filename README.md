@@ -1,201 +1,289 @@
-# IT Support Tool Suite
+# 🛠️ IT Support Tool Suite
 
-> Bộ công cụ desktop dành cho kỹ thuật viên IT triển khai, cấu hình và bàn giao máy tính Windows nhanh hơn.
+<div align="center">
 
-**Phiên bản:** `v1.2.3` · **Nền tảng:** Windows 10/11 64-bit · **Ngôn ngữ:** Python 3.10+
+> **Bộ công cụ Desktop chuyên nghiệp dành cho Kỹ thuật viên IT và System Administrator**  
+> *Tối ưu hóa quy trình triển khai, cấu hình, sao lưu và bảo trì máy tính Windows.*
 
-IT Support Tool Suite gom các tác vụ hỗ trợ thường gặp vào một giao diện duy nhất: sao lưu dữ liệu người dùng, quét mạng LAN, cấu hình IP, cài máy in mạng, cài phần mềm bằng `winget` và quản lý ứng dụng đã cài. Ứng dụng chạy với quyền người dùng thông thường và chỉ yêu cầu UAC khi một thao tác thực sự cần quyền quản trị.
+[![Version](https://img.shields.io/badge/version-v1.2.3-blue.svg?style=for-the-badge)](VERSION)
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011%20(64--bit)-0078D6.svg?style=for-the-badge&logo=windows)](https://microsoft.com)
+[![Python](https://img.shields.io/badge/python-3.10%2B-3776AB.svg?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Security](https://img.shields.io/badge/encryption-AES--256--GCM-green.svg?style=for-the-badge)](docs/SECURITY.md)
 
-## Điểm nổi bật
+</div>
 
-- Giao diện tiếng Việt, hỗ trợ chế độ sáng và tối.
-- Không cần chạy toàn bộ ứng dụng bằng quyền Administrator.
-- Các tác vụ dài chạy nền để hạn chế treo giao diện.
-- Có bản EXE độc lập dành cho máy không cài Python.
-- Hỗ trợ backup mã hóa bằng AES-256-GCM.
-- Kiểm tra đường dẫn ZIP và thư mục xóa nhằm hạn chế thao tác không an toàn.
+---
 
-## Tính năng
+## 📌 Giới thiệu
 
-### Sao lưu và khôi phục
+**IT Support Tool Suite** là bộ công cụ desktop toàn diện giúp kỹ thuật viên IT đơn giản hóa và tự động hóa các thao tác quản trị hệ thống hàng ngày trên môi trường Windows. Thay vì thao tác thủ công qua nhiều công cụ rời rạc, ứng dụng hợp nhất toàn bộ tính năng cần thiết vào một giao diện trực quan, mượt mà và an toàn.
 
-- Sao lưu Desktop, Documents và Downloads.
-- Sao lưu Chrome Profile và dữ liệu Outlook `.pst`/`.ost`.
-- Quét, lựa chọn và khôi phục driver Windows.
-- Xuất bản sao lưu dạng ZIP hoặc `.itsbackup` được mã hóa.
-- Kiểm tra dung lượng trống và tính toàn vẹn trước khi hoàn tất.
-- Ngăn thư mục backup tự sao chép vào chính nó và chặn ZIP có đường dẫn không an toàn.
+Được thiết kế dựa trên nguyên tắc **đặc quyền tối thiểu (Least Privilege)**, ứng dụng vận hành ở quyền người dùng thông thường và chỉ nâng cấp UAC đối với các tác vụ quản trị chuyên biệt.
 
-> Đóng hoàn toàn Chrome và Outlook trước khi sao lưu hoặc khôi phục. Dữ liệu đăng nhập Chrome có thể được Windows mã hóa theo tài khoản hoặc thiết bị và không đảm bảo sử dụng được trên máy khác.
+---
 
-### Tra cứu và quản lý IP/MAC
+## 🚀 Điểm nổi bật
 
-- Hiển thị card mạng, IPv4, subnet mask và default gateway hiện tại.
-- Quét tối đa 4.096 địa chỉ IPv4 mỗi lượt.
-- Tra cứu trạng thái, MAC address và hostname của thiết bị.
-- Sắp xếp kết quả theo địa chỉ IP và xuất CSV UTF-8.
-- Đặt IP tĩnh, gateway, DNS hoặc chuyển card mạng về DHCP.
-- Chạy các lệnh mạng ở chế độ ẩn, không bật liên tục cửa sổ CMD.
+- 🇻🇳 **Giao diện hiện đại:** Hỗ trợ hoàn toàn Tiếng Việt, tương thích mượt mà với Dark Mode & Light Mode.
+- 🔐 **Bảo mật cao:** Mã hóa dữ liệu sao lưu bằng thuật toán chuẩn quân đội **AES-256-GCM**.
+- 🛡️ **An toàn hệ thống:** Kiểm tra dung lượng trống, chặn Path Traversal và ngăn nguy cơ tự sao chép lặp vô tận.
+- ⚡ **Hiệu năng tối ưu:** Xử lý tác vụ nặng dưới dạng tiến trình nền (Async Worker Threads), giao diện không bị treo đơ.
+- 🎯 **UAC Thông minh:** Chỉ yêu cầu quyền Administrator đúng lúc khi cấu hình mạng hoặc cài driver/máy in.
+- 📦 **Chạy độc lập:** Cung cấp bản EXE Portable hoàn chỉnh, không yêu cầu cài đặt môi trường Python.
 
-### Cài đặt máy in mạng
+---
 
-- Dò thiết bị sử dụng cổng RAW TCP `9100`.
-- Nhận diện model qua PJL khi thiết bị hỗ trợ.
-- Tạo Standard TCP/IP Printer Port và hàng đợi máy in.
-- Sử dụng Microsoft IPP Class Driver hoặc driver thủ công từ file `.inf`.
-- Gom quá trình cài đặt đặc quyền vào một lần xác nhận UAC.
+## 📋 Mục lục
 
-### Cài phần mềm
+- [Điểm nổi bật](#-điểm-nổi-bật)
+- [Tính năng chi tiết](#-tính-năng-chi-tiết)
+  - [Sao lưu & Khôi phục](#1-sao-lưu--khôi-phục-backup--restore)
+  - [Tra cứu & Cấu hình Mạng](#2-tra-cứu--cấu-hình-mạng-network-management)
+  - [Cài đặt Máy in Nước / Mạng](#3-cài-đặt-máy-in-mạng-network-printer-setup)
+  - [Triển khai Phần mềm](#4-triển-khai-phần-mềm-winget-package-manager)
+  - [Gỡ ứng dụng & Dọn dẹp](#5-gỡ-ứng-dụng--dọn-dẹp-tàn-dư-uninstaller)
+- [Yêu cầu hệ thống](#-yêu-cầu-hệ-thống)
+- [Hướng dẫn sử dụng](#-hướng-dẫn-sử-dụng)
+  - [Chạy bản EXE Portable](#chạy-bản-exe-portable)
+  - [Chạy từ Mã nguồn (Source Code)](#chạy-từ-mã-nguồn-source-code)
+- [Phát triển & Đóng gói Release](#-phát-triển--đóng-gói-release)
+- [Cấu trúc dự án](#-cấu-trúc-dự-án)
+- [Khắc phục sự cố](#-khắc-phục-sự-cố)
+- [Bảo mật & Quyền riêng tư](#-bảo-mật--quyền-riêng-tư)
+- [Giấy phép & Bản quyền](#-giấy-phép--bản-quyền)
 
-Ứng dụng sử dụng Windows Package Manager (`winget`) để kiểm tra và cài đặt các phần mềm phổ biến như:
+---
 
-- 7-Zip, WinRAR, UniKey và UltraViewer;
-- Google Chrome, Zalo và VLC;
-- Foxit PDF Reader, LibreOffice và Notepad++;
-- PowerToys, Everything, CrystalDiskInfo, CPU-Z và HWiNFO.
+## ⚡ Tính năng chi tiết
 
-Các phần mềm đã có trên máy sẽ được nhận diện và tự động bỏ qua.
+### 1. 💾 Sao lưu & Khôi phục (Backup & Restore)
+*Giúp chuyển đổi máy tính hoặc sao lưu định kỳ cho người dùng nhanh chóng, an toàn.*
+- **Phạm vi sao lưu:** Thư mục cá nhân (`Desktop`, `Documents`, `Downloads`), hồ sơ trình duyệt Chrome (`Profile`), và dữ liệu mail Outlook (`.pst` / `.ost`).
+- **Sao lưu Driver:** Tự động quét, đóng gói và khôi phục toàn bộ Driver thiết bị trên hệ thống Windows.
+- **Đóng gói & Mã hóa:** Xuất định dạng file nén `.zip` tiêu chuẩn hoặc định dạng mã hóa an toàn `.itsbackup` (AES-256-GCM).
+- **Cơ chế an toàn:** Tự động kiểm tra dung lượng ổ đĩa khả dụng, xác minh tính toàn vẹn SHA-256 trước khi xuất và chặn triệt để lỗ hổng ZIP đè đường dẫn không an toàn.
 
-### Gỡ cài đặt
+> [!IMPORTANT]
+> Hãy đóng hoàn toàn Google Chrome và Microsoft Outlook trước khi tiến hành sao lưu hoặc khôi phục. Dữ liệu tài khoản mã hóa theo máy của Chrome có thể yêu cầu đăng nhập lại trên thiết bị mới.
 
-- Đọc ứng dụng từ Registry theo người dùng và toàn máy, bao gồm nhánh 32-bit/64-bit.
-- Tìm kiếm theo tên, phiên bản hoặc nhà phát hành.
-- Mở thư mục cài đặt và chạy trình gỡ chính thức.
-- Chuẩn hóa lệnh MSI từ chế độ cài/sửa sang gỡ cài đặt.
-- Quét tàn dư liên quan trong thư mục cài đặt, AppData, cache và Registry.
-- Chỉ xóa tàn dư sau khi người dùng lựa chọn và xác nhận.
+---
 
-## Yêu cầu hệ thống
+### 2. 🌐 Tra cứu & Cấu hình Mạng (Network Management)
+*Quản lý và chẩn đoán kết nối mạng LAN tập trung.*
+- **Thông tin Card mạng:** Hiển thị chi tiết IPv4, Subnet Mask, Default Gateway và trạng thái kết nối.
+- **Quét mạng LAN hàng loạt:** Cho phép quét song song tối đa **4.096 địa chỉ IPv4** trong từng Subnet `/20` - `/24`.
+- **Nhận diện thiết bị:** Tra cứu chính xác trạng thái Online/Offline, MAC Address và Hostname thiết bị trong mạng.
+- **Cấu hình IP linh hoạt:** Chuyển đổi nhanh giữa chế độ **DHCP** và **IP Tĩnh (Static IP)** kèm DNS tuỳ chỉnh.
+- **Xuất báo cáo:** Hỗ trợ xuất danh sách thiết bị quét ra file `.csv` chuẩn UTF-8.
+- **Trải nghiệm chạy ẩn:** Thực thi lệnh `netsh` và `arp` ở chế độ ẩn, không bật cửa sổ CMD gây phiền người dùng.
 
-- Windows 10 hoặc Windows 11 64-bit.
-- Python `3.10` đến dưới `3.15` nếu chạy từ source.
-- Kết nối Internet cho chức năng cài phần mềm.
-- `winget` cho tab **Cài phần mềm**.
-- Tài khoản Administrator để chấp nhận UAC khi cấu hình mạng, driver hoặc máy in.
+---
 
-Nếu máy chưa có `winget`, hãy cài hoặc cập nhật **App Installer** từ Microsoft Store.
+### 3. 🖨️ Cài đặt Máy in Mạng (Network Printer Setup)
+*Tự động hóa kết nối máy in văn phòng qua cổng IP.*
+- **Dò tìm tự động:** Quét thiết bị lắng nghe trên cổng RAW TCP `9100`.
+- **Nhận diện Model:** Trích xuất tên model chi tiết thông qua giao thức PJL (Printer Job Language).
+- **Tạo Cổng & Hàng đợi:** Tự động khởi tạo Standard TCP/IP Port và cài đặt hàng đợi máy in.
+- **Tương thích Driver đa dạng:** Sử dụng Microsoft IPP Class Driver có sẵn hoặc nạp file `.inf` tùy chỉnh.
+- **Tối ưu UAC:** Gom tất cả thao tác đòi hỏi quyền System/Admin vào duy nhất 1 lần xác nhận UAC.
 
-## Chạy bản EXE
+---
 
-Bản đóng gói mới nhất nằm tại:
+### 4. 📦 Triển khai Phần mềm (Winget Package Manager)
+*Cài đặt nhanh các công cụ cơ bản cho máy mới bàn giao.*
+Tự động kiểm tra và nâng cấp/cài đặt các ứng dụng phổ biến thông qua **Windows Package Manager (`winget`)**:
 
-```text
-dist\ITSupportToolSuite-v1.2.3.exe
-```
+| Nhóm phần mềm | Ứng dụng hỗ trợ |
+| :--- | :--- |
+| **Tiện ích hệ thống** | `7-Zip`, `WinRAR`, `UniKey`, `UltraViewer` |
+| **Giao tiếp & Trình duyệt**| `Google Chrome`, `Zalo`, `VLC Media Player` |
+| **Văn phòng & Tài liệu** | `Foxit PDF Reader`, `LibreOffice`, `Notepad++` |
+| **Chẩn đoán & Công cụ IT**| `PowerToys`, `Everything`, `CrystalDiskInfo`, `CPU-Z`, `HWiNFO` |
 
-Chỉ cần nhấp đúp để chạy. Không chọn **Run as administrator**; ứng dụng sẽ tự yêu cầu UAC tại đúng thao tác cần thiết.
+> [!TIP]
+> Ứng dụng sẽ tự động kiểm tra phần mềm đã tồn tại trên máy để bỏ qua, tránh việc cài đè hoặc tốn tài nguyên mạng.
 
-Vì bản phát triển chưa có chữ ký số, Windows SmartScreen có thể cảnh báo. Chỉ chạy file nhận từ nguồn tin cậy và đối chiếu SHA-256 trong `dist\SHA256SUMS-v1.2.3.txt`.
+---
 
-## Chạy từ source
+### 5. 🧹 Gỡ ứng dụng & Dọn dẹp tàn dư (Uninstaller)
+*Gỡ sạch triệt để các phần mềm rác hoặc lỗi thời.*
+- **Quét toàn diện:** Tra cứu Registry của cả 32-bit và 64-bit (User scope & Machine scope).
+- **Bộ lọc tìm kiếm:** Tìm nhanh ứng dụng theo Tên, Phiên bản hoặc Nhà phát hành (Publisher).
+- **Chuẩn hóa lệnh MSI:** Tự động khắc phục lệnh gỡ lỗi của installer MSI (chuyển từ Repair/Modify sang Uninstall).
+- **Dọn dẹp tàn dư (Deep Clean):** Quét và xóa sạch tập tin dư thừa trong `Program Files`, `AppData`, `Temp` và Registry keys liên quan.
+- **Xác nhận an toàn:** Hiển thị chi tiết các mục tàn dư và yêu cầu người dùng xác nhận trước khi thực hiện xóa.
 
-Mở PowerShell tại thư mục dự án:
+---
+
+## 🖥️ Yêu cầu hệ thống
+
+| Thành phần | Yêu cầu tối thiểu |
+| :--- | :--- |
+| **Hệ điều hành** | Windows 10 hoặc Windows 11 (64-bit) |
+| **Môi trường Python** *(chạy source)* | Python `3.10` đến `< 3.15` |
+| **Quyền truy cập** | Account có quyền Administrator (cho thao tác UAC) |
+| **Công cụ đi kèm** | Windows Package Manager (`winget`) cho tab Cài phần mềm |
+| **Kết nối mạng** | Cần Internet để tải phần mềm qua `winget` |
+
+> [!NOTE]
+> Nếu hệ thống chưa có `winget`, vui lòng cập nhật **App Installer** từ [Microsoft Store](https://apps.microsoft.com/store/detail/9NBLGGH4NNS1).
+
+---
+
+## 🛠️ Hướng dẫn sử dụng
+
+### Chạy bản EXE Portable
+
+1. Tải bản đóng gói phát hành sẵn tại đường dẫn:
+   ```text
+   dist\ITSupportToolSuite-v1.2.3.exe
+   ```
+2. Nhấp đúp chuột để chạy trực tiếp. **Không cần chọn "Run as Administrator"** (Ứng dụng sẽ tự nâng quyền UAC khi thực sự cần).
+3. Kiểm tra mã SHA-256 để đảm bảo tính toàn vẹn:
+   ```powershell
+   Get-FileHash -Algorithm SHA256 .\dist\ITSupportToolSuite-v1.2.3.exe
+   ```
+   *(Đối chiếu kết quả với file `dist\SHA256SUMS-v1.2.3.txt`)*
+
+---
+
+### Chạy từ Mã nguồn (Source Code)
+
+Mở PowerShell tại thư mục dự án và thực hiện các bước:
 
 ```powershell
+# 1. Tạo và kích hoạt môi trường ảo Python
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
+
+# 2. Cập nhật pip & cài đặt gói phụ thuộc
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 python -m pip install -e .
+
+# 3. Khởi chạy ứng dụng
 python -m it_support_suite
 ```
 
-Những lần chạy sau:
-
-```powershell
-.\.venv\Scripts\Activate.ps1
-python -m it_support_suite
-```
-
-Nếu PowerShell chặn script kích hoạt môi trường ảo:
-
+*Nếu gặp lỗi PowerShell chặn script kích hoạt môi trường ảo, hãy chạy:*
 ```powershell
 Set-ExecutionPolicy -Scope Process Bypass
 .\.venv\Scripts\Activate.ps1
 ```
 
-## Phát triển và kiểm thử
+---
 
-Cài bộ thư viện dành cho phát triển:
+## 👨‍💻 Phát triển & Đóng gói Release
 
+### Môi trường Phát triển (Development)
+
+Cài đặt thư viện hỗ trợ kiểm thử và phát triển:
 ```powershell
 python -m pip install -r requirements-dev.txt
 python -m pip install -e .
 ```
 
-Chạy toàn bộ test:
-
+Khởi chạy bộ kiểm thử tự động (Unit test suite):
 ```powershell
 python -m pytest
 ```
 
-Đóng gói phiên bản mới:
+### Đóng gói Phiên bản Release
 
+Để tạo bản EXE độc lập đi kèm mã băm SHA-256 checksum:
 ```powershell
 .\scripts\release.ps1 -Version 1.2.4
 ```
+*Script sẽ tự động chạy test suite, đóng gói PyInstaller và lưu kết quả vào thư mục `dist/`.*
 
-Script release sẽ chạy test, tạo EXE bằng PyInstaller và xuất checksum SHA-256. Hãy tăng version cho mỗi bản phát hành để giữ các artifact cũ trong `dist`.
+---
 
-## Cấu trúc dự án
+## 📁 Cấu trúc dự án
 
 ```text
 toolhelpdesk/
-├── src/it_support_suite/       # Mã nguồn ứng dụng
-│   ├── __main__.py             # Điểm khởi chạy
-│   ├── gui.py                  # Cửa sổ chính và giao diện tab
-│   ├── backup_*.py             # Sao lưu, khôi phục và mã hóa
-│   ├── network_*.py            # Quét và cấu hình mạng
-│   ├── printer_*.py            # Quét và cài máy in
-│   ├── software_*.py           # Cài phần mềm bằng winget
-│   └── uninstaller_*.py        # Liệt kê và gỡ ứng dụng
-├── tests/                      # Kiểm thử tự động
-├── scripts/release.ps1         # Quy trình đóng gói release
-├── packaging/                  # Cấu hình PyInstaller/installer
-├── docs/                       # Tài liệu bảo mật, riêng tư và hỗ trợ
-├── requirements.txt            # Thư viện runtime
-└── requirements-dev.txt        # Thư viện phát triển
+├── 📁 src/it_support_suite/       # Mã nguồn chính của ứng dụng
+│   ├── 📄 __main__.py             # Điểm khởi chạy ứng dụng (Entry point)
+│   ├── 📄 gui.py                  # Giao diện người dùng CustomTkinter chính
+│   ├── 📄 backup_*.py             # Mô-đun Sao lưu, Khôi phục & Mã hóa AES
+│   ├── 📄 network_*.py            # Mô-đun Quét IP, MAC & Cấu hình Mạng
+│   ├── 📄 printer_*.py            # Mô-đun Dò tìm & Cài đặt Máy in
+│   ├── 📄 software_*.py           # Mô-đun Triển khai ứng dụng qua Winget
+│   └── 📄 uninstaller_*.py        # Mô-đun Gỡ ứng dụng & Dọn dẹp tàn dư
+├── 📁 tests/                      # Bộ kiểm thử tự động (Pytest)
+├── 📁 scripts/                    # Scripts tự động hóa build & release (release.ps1)
+├── 📁 packaging/                  # Cấu hình PyInstaller & Installer spec
+├── 📁 docs/                       # Tài liệu Bảo mật, Privacy, Support & EULA
+├── 📄 requirements.txt            # Thư viện Runtime phụ thuộc
+├── 📄 requirements-dev.txt        # Thư viện Development phụ thuộc
+└── 📄 pyproject.toml              # Cấu hình package Python
 ```
 
-## Khắc phục sự cố
+---
 
-### Tab Gỡ cài đặt không hiển thị ứng dụng
+## ❓ Khắc phục sự cố (Troubleshooting)
 
-- Đảm bảo đang chạy đúng phiên bản mới nhất.
-- Đóng hoàn toàn bản cũ trước khi mở EXE mới.
-- Nhấn **Làm mới** và kiểm tra ô tìm kiếm đang để trống.
-- Xem log tại `%LOCALAPPDATA%\ITSupportToolSuite\logs\application.log`.
+<details>
+<summary><b>1. Tab Gỡ cài đặt không hiển thị danh sách ứng dụng?</b></summary>
 
-### Không cài được phần mềm
+- Đảm bảo bạn đã tắt hoàn toàn phiên bản ứng dụng cũ trước khi mở bản EXE mới.
+- Bấm nút **Làm mới** và xóa mọi ký tự tìm kiếm trong ô tìm kiếm.
+- Kiểm tra file log tại: `%LOCALAPPDATA%\ITSupportToolSuite\logs\application.log`.
+</details>
 
+<details>
+<summary><b>2. Không thể cài đặt phần mềm qua Tab Cài phần mềm?</b></summary>
+
+Kiểm tra trạng thái của `winget` bằng PowerShell:
 ```powershell
 winget --version
 winget source update
 ```
+Nếu nhận báo lỗi không tìm thấy `winget`, bạn cần cập nhật ứng dụng **App Installer** trên máy.
+</details>
 
-Nếu lệnh đầu tiên không tồn tại, hãy cập nhật App Installer.
+<details>
+<summary><b>3. Thao tác đổi IP tĩnh hoặc Cài máy in bị thất bại?</b></summary>
 
-### Không đổi được IP hoặc cài máy in
+- Đảm bảo bạn đã bấm **Yes / Đồng ý** trên cửa thoại UAC nâng quyền.
+- Kiểm tra phần mềm bảo mật doanh nghiệp (Antivirus/EDR) có đang chặn PowerShell, `PnPUtil`, `DISM` hoặc dịch vụ `Print Spooler` hay không.
+</details>
 
-Chấp nhận hộp thoại UAC và xác nhận tài khoản được dùng có quyền quản trị. Một số phần mềm bảo mật doanh nghiệp có thể chặn PowerShell, DISM, PnPUtil hoặc thay đổi Print Spooler.
+<details>
+<summary><b>4. Quá trình sao lưu bỏ qua file Google Chrome hoặc Outlook?</b></summary>
 
-### Backup bỏ qua file Chrome hoặc Outlook
+- Hãy chắc chắn đã kết thúc hoàn toàn tiến trình `chrome.exe` hoặc `outlook.exe` trong Task Manager trước khi sao lưu.
+</details>
 
-Đóng ứng dụng và kết thúc toàn bộ tiến trình `chrome.exe` hoặc `outlook.exe` trong Task Manager, sau đó thử lại.
+---
 
-## Bảo mật và dữ liệu
+## 🔒 Bảo mật & Dữ liệu
 
-- Mật khẩu backup mã hóa phải có ít nhất 12 ký tự, không được lưu và không thể khôi phục nếu bị quên.
-- Không gửi backup, mật khẩu, Chrome Profile hoặc mailbox Outlook khi yêu cầu hỗ trợ.
-- Trước khi báo lỗi, hãy xóa thông tin nhạy cảm khỏi ảnh chụp và log.
-- Bản phát hành thương mại phải được ký Authenticode hợp lệ.
+- 🔑 **Mật khẩu mã hóa:** Mật khẩu sao lưu yêu cầu độ dài tối thiểu **12 ký tự**. Mật khẩu này không được lưu trữ ở bất kỳ đâu và **không thể khôi phục** nếu bị quên.
+- 🛡️ **Nguyên tắc bảo mật:** Không đính kèm dữ liệu sao lưu, mật khẩu, Chrome profile hoặc file mailbox Outlook vào các yêu cầu hỗ trợ (Support tickets).
+- 📜 **Định danh phát hành:** Các bản phát hành chính thức bắt buộc phải ký số **Authenticode** hợp lệ.
 
-Xem thêm: [Security](docs/SECURITY.md), [Privacy](docs/PRIVACY.md), [Support](docs/SUPPORT.md), [EULA](docs/EULA.md) và [Release guide](docs/RELEASING.md).
+*Xem thêm tài liệu chi tiết:*  
+[Security Policy](docs/SECURITY.md) · [Privacy Policy](docs/PRIVACY.md) · [Support Guide](docs/SUPPORT.md) · [EULA](docs/EULA.md) · [Releasing Guide](docs/RELEASING.md)
 
-## Công nghệ
+---
 
-Python · Tkinter · CustomTkinter · PowerShell · winget · DISM · PnPUtil · Netsh · PyInstaller · cryptography
+## 🧰 Công nghệ sử dụng
 
-## Giấy phép
+<p align="left">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/Tkinter-CustomTkinter-blue?style=flat-square" />
+  <img src="https://img.shields.io/badge/PowerShell-5391FE?style=flat-square&logo=powershell&logoColor=white" />
+  <img src="https://img.shields.io/badge/Windows-Winget-0078D6?style=flat-square&logo=windows&logoColor=white" />
+  <img src="https://img.shields.io/badge/Security-AES--256--GCM-success?style=flat-square" />
+  <img src="https://img.shields.io/badge/PyInstaller-Packaging-orange?style=flat-square" />
+</p>
 
-Đây là phần mềm sở hữu độc quyền. Không có quyền sử dụng, sao chép, sửa đổi hoặc phân phối nếu chưa có thỏa thuận bằng văn bản với chủ sở hữu bản quyền. Xem [LICENSE](LICENSE) và [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) để biết chi tiết.
+---
+
+## ⚖️ Giấy phép
+
+Copyright © IT Support Tool Suite. All rights reserved.
+
+Đây là phần mềm sở hữu độc quyền (**Proprietary Software**). Nghiêm cấm mọi hành vi sao chép, phân phối, sửa đổi hoặc sử dụng thương mại khi chưa được sự đồng ý bằng văn bản từ chủ sở hữu bản quyền.  
+Chi tiết xem tại [LICENSE](LICENSE) và [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
