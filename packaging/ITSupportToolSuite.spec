@@ -6,6 +6,7 @@ project_root = Path(SPECPATH).parent
 version = (project_root / "VERSION").read_text(encoding="utf-8").strip()
 app_name = f"ITSupportToolSuite-v{version}"
 datas, binaries, hiddenimports = collect_all("customtkinter")
+datas.append((str(project_root / "VERSION"), "."))
 
 a = Analysis(
     [str(project_root / "packaging" / "entrypoint.py")],

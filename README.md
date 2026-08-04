@@ -5,7 +5,7 @@
 > **Bộ công cụ Desktop chuyên nghiệp dành cho Kỹ thuật viên IT và System Administrator**  
 > *Tối ưu hóa quy trình triển khai, cấu hình, sao lưu và bảo trì máy tính Windows.*
 
-[![Version](https://img.shields.io/badge/version-v1.2.5-blue.svg?style=for-the-badge)](VERSION)
+[![Version](https://img.shields.io/badge/version-v1.2.6-blue.svg?style=for-the-badge)](VERSION)
 [![Platform](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011%20(64--bit)-0078D6.svg?style=for-the-badge&logo=windows)](https://microsoft.com)
 [![Python](https://img.shields.io/badge/python-3.10%2B-3776AB.svg?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![Security](https://img.shields.io/badge/encryption-AES--256--GCM-green.svg?style=for-the-badge)](docs/SECURITY.md)
@@ -135,15 +135,15 @@ Tự động kiểm tra và nâng cấp/cài đặt các ứng dụng phổ bi�
 ### Chạy bản EXE Portable
 
 1. **Tải bản đóng gói phát hành sẵn:**  
-   👉 **[📥 Tải về ITSupportToolSuite-v1.2.5.exe](https://github.com/HoangGia73/HelpdeskApp/releases/download/v1.2.5/ITSupportToolSuite-v1.2.5.exe)** (Bản Portable)  
+   👉 **[📥 Tải về ITSupportToolSuite-v1.2.6.exe](https://github.com/HoangGia73/HelpdeskApp/releases/download/v1.2.6/ITSupportToolSuite-v1.2.6.exe)** (Bản Portable)  
    *(Hoặc xem danh sách tất cả bản phát hành tại [GitHub Releases](https://github.com/HoangGia73/HelpdeskApp/releases))*
 
 2. Nhấp đúp chuột để chạy trực tiếp. **Không cần chọn "Run as Administrator"** (Ứng dụng sẽ tự nâng quyền UAC khi thực sự cần).
 3. Kiểm tra mã SHA-256 để đảm bảo tính toàn vẹn:
    ```powershell
-   Get-FileHash -Algorithm SHA256 .\dist\ITSupportToolSuite-v1.2.5.exe
+   Get-FileHash -Algorithm SHA256 .\dist\ITSupportToolSuite-v1.2.6.exe
    ```
-   *(Đối chiếu kết quả với file [`dist/SHA256SUMS-v1.2.5.txt`](https://github.com/HoangGia73/HelpdeskApp/releases/download/v1.2.5/SHA256SUMS-v1.2.5.txt))*
+   *(Đối chiếu kết quả với file [`dist/SHA256SUMS-v1.2.6.txt`](https://github.com/HoangGia73/HelpdeskApp/releases/download/v1.2.6/SHA256SUMS-v1.2.6.txt))*
 
 ---
 

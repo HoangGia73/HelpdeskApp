@@ -8,6 +8,7 @@ from .network_tab import NetworkTabMixin
 from .printer_tab import PrinterTabMixin
 from .software_tab import SoftwareTabMixin
 from .uninstaller_tab import UninstallerTabMixin
+from . import __version__
 
 
 class ITSupportApp(BackupTabMixin, NetworkTabMixin, PrinterTabMixin,
@@ -81,7 +82,7 @@ class ITSupportApp(BackupTabMixin, NetworkTabMixin, PrinterTabMixin,
 
         customtkinter.CTkLabel(
             version_badge,
-            text="v1.2.4",
+            text=f"v{__version__}",
             font=customtkinter.CTkFont(family="Segoe UI", size=10, weight="bold"),
             text_color=("#1d4ed8", "#38bdf8"),
         ).pack(padx=6, pady=1)
